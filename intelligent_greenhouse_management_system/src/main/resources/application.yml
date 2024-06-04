@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: green_house
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/intelligent_greenhouse_management_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #将mybatis日志输出到控制台
+    auto-mapping-behavior: full #多表联合查询时自动映射
+  mapper-locations: classpath:/mappers/*.xml # 加载映射文件
+  type-aliases-package: cn.hist.greenHouse.entity
+server:
+  port: 7100
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
