@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hist.greenHouse.mapper.GreenHouseMapper">
+<!--   添加-->
+    <insert id="addGreenHouse" parameterType="GreenHouse">
+        insert into green_house values (#{id},#{uid},#{name},#{location},#{description})
+    </insert>
+<!--    删除-->
+    <delete id="deleteGreenHouse">
+        delete from green_house where id = #{id}
+    </delete>
+<!--    修改-->
+    <update id="updateGreenHouse" parameterType="GreenHouse">
+        update green_house set name = #{name},location = #{location},description = #{description} where id = #{id}
+    </update>
+<!--    查询温室-->
+    <select id="getGreenHouses" parameterType="Integer" resultType="GreenHouse">
+        select * from green_house limit #{pageNum},#{pageSize}
+    </select>
+<!--    查询温室总数-->
+    <select id="getGreenHouseCount" resultType="Integer">
+        select count(*) from green_house
+    </select>
+</mapper>

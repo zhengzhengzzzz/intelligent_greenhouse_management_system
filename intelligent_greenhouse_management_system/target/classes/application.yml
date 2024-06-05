@@ -14,6 +14,3 @@ mybatis:
   type-aliases-package: cn.hist.greenHouse.entity
 server:
   port: 7100
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true

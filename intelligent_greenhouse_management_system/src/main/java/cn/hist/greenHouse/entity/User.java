@@ -10,9 +10,9 @@ public class User {
     private String username;
     private String password;
     private String phone;
-    private Integer role;
+    private String role;
 
-    public User(String username, String password, String phone, Integer role) {
+    public User(String username, String password, String phone, String role) {
         this.username = username;
         this.password = password;
         this.phone = phone;
@@ -43,11 +43,11 @@ public class User {
         this.phone = phone;
     }
 
-    public Integer getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Integer role) {
+    public void setRole(String role) {
         this.role = role;
     }
 }
