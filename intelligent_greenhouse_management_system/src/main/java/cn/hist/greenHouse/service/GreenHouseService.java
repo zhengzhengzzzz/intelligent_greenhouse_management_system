@@ -10,4 +10,5 @@ public interface GreenHouseService {
     void updateGreenHouse(GreenHouse greenHouse);
     List<GreenHouse> getGreenHouses(Integer pageNum, Integer pageSize);
     Integer getGreenHouseCount();
+    GreenHouse getDetails(Integer id);
 }

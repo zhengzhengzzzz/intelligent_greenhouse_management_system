@@ -4,6 +4,7 @@ import cn.hist.greenHouse.entity.User;
 import cn.hist.greenHouse.service.UserService;
 import cn.hist.greenHouse.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

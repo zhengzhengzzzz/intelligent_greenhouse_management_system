@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hist.greenHouse.mapper.EnvironmentDataMapper">
+    <!--   添加-->
+    <insert id="addEnvironmentData" parameterType="EnvironmentData">
+        insert into environment_data values (#{id},#{gid},#{time},#{temperature},#{humidity},#{co2},#{other})
+    </insert>
+    <!--    删除-->
+    <delete id="deleteEnvironmentData">
+        delete from environment_data where id = #{id}
+    </delete>
+    <!--    修改-->
+    <update id="updateEnvironmentData" parameterType="EnvironmentData">
+        update environment_data set time = #{time},temperature = #{temperature},humidity=#{humidity},co2=#{co2},
+                                   other=#{other} where id = #{id}
+    </update>
+<!--    查询最新的一条记录-->
+    <select id="getlatest" resultType="EnvironmentData">
+        select * from environment_data order by time desc limit 1
+    </select>
+<!--    查询参数的历史记录-->
+    <select id="getEnvData" resultType="map">
+        select temperature,humidity,co2,other,time from environment_data order by time desc
+    </select>
+</mapper>

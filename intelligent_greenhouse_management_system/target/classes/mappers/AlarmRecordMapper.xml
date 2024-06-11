@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hist.greenHouse.mapper.AlarmRecordMapper">
+    <!--   添加-->
+    <insert id="addAlarmRecord" parameterType="AlarmRecord">
+        insert into alarm_record (id, gid, time,parameter , value, actionTaken)
+         values (#{id},#{gid},#{time},#{parameter},#{value},#{actionTaken})
+    </insert>
+    <!--    删除-->
+    <delete id="deleteAlarmRecord">
+        delete from alarm_record where id = #{id}
+    </delete>
+    <!--    修改-->
+    <update id="updateAlarmRecord" parameterType="AlarmRecord">
+        update alarm_record set parameter = #{parameter},value = #{value},actionTaken = #{actionTaken},time = #{time} where id = #{id}
+    </update>
+    <!--    根据id查询-->
+    <select id="getAlarmRecord" resultType="AlarmRecord">
+        select * from alarm_record where id = #{id}
+    </select>
+</mapper>

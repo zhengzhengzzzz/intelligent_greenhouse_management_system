@@ -23,4 +23,54 @@
     <select id="getGreenHouseCount" resultType="Integer">
         select count(*) from green_house
     </select>
+    <resultMap id="greenHouseMap" type="GreenHouse">
+        <id column="id" property="id"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="description" column="description"/>
+        <collection property="con" ofType="ControlStrategy">
+            <id column="cid" property="id"/>
+            <result property="gid" column="gid"/>
+            <result property="parameter" column="parameter"/>
+            <result property="min" column="min"/>
+            <result property="max" column="max"/>
+            <result property="action" column="action"/>
+        </collection>
+        <collection property="al" ofType="AlarmRecord">
+            <id column="aid" property="id"/>
+            <result property="time" column="time"/>
+            <result property="gid" column="gid"/>
+            <result property="parameter" column="parameter"/>
+            <result property="value" column="value"/>
+            <result property="actionTaken" column="actionTaken"/>
+        </collection>
+        <collection property="env" ofType="EnvironmentData">
+            <id column="eid" property="id"/>
+            <result property="time" column="time"/>
+            <result property="gid" column="gid"/>
+            <result property="temperature" column="temperature"/>
+            <result property="humidity" column="humidity"/>
+            <result property="co2" column="co2"/>
+            <result property="other" column="other"/>
+        </collection>
+        <collection property="dev" ofType="DeviceInfo">
+            <id column="did" property="id"/>
+            <result property="gid" column="gid"/>
+            <result property="name" column="name"/>
+            <result property="type" column="type"/>
+            <result property="status" column="status"/>
+        </collection>
+    </resultMap>
+
+
+    <!--查询温室详情参数-->
+    <select id="getDetails" resultMap="greenHouseMap">
+        SELECT a.*, a.id AS aid, c.*, c.id AS cid, d.*, d.id AS did, e.*, e.id AS eid, g.*
+        FROM alarm_record a
+                 JOIN green_house g ON a.gid = g.id
+                 JOIN control_strategy c ON c.gid = g.id
+                 JOIN device_info d ON d.gid = g.id
+                 JOIN environment_data e ON e.gid = g.id
+    </select>
+
 </mapper>

@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 @Mapper
 public interface UserMapper {
-//    void addUser(User user);
+    User findUserByName(String name);
+    User findUserById(Integer id);
     void deleteUser(Integer id);
     void updateUser(User user);
     List<User> getUsers(@Param("pageNum") Integer pageNum,@Param("pageSize") Integer pageSize);
     Integer getUsersCount();
+    void saveUser(User user);
 }

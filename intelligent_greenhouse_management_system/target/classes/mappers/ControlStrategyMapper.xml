@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hist.greenHouse.mapper.ControlStrategyMapper">
+    <!--   添加-->
+    <insert id="addControlStrategy" parameterType="ControlStrategy">
+        insert into control_strategy values (#{id},#{gid},#{parameter},#{min},#{max},#{action})
+    </insert>
+    <!--    删除-->
+    <delete id="deleteControlStrategy">
+        delete from control_strategy where id = #{id}
+    </delete>
+    <!--    修改-->
+    <update id="updateControlStrategy" parameterType="ControlStrategy">
+        update control_strategy set parameter = #{parameter},min = #{min},max = #{max},action = #{action} where id = #{id}
+    </update>
+    <!--    根据id查询-->
+    <select id="getControlStrategy" resultType="ControlStrategy">
+        select * from control_strategy where id = #{id}
+    </select>
+</mapper>

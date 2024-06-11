@@ -35,4 +35,8 @@ public class GreenHouseServiceImpl implements GreenHouseService {
     public Integer getGreenHouseCount(){
         return greenHouseMapper.getGreenHouseCount();
     }
+    @Override
+    public GreenHouse getDetails(Integer id){
+        return greenHouseMapper.getDetails(id);
+    }
 }

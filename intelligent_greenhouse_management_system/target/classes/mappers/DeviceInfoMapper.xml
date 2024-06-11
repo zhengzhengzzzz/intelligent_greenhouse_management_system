@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hist.greenHouse.mapper.DeviceInfoMapper">
+    <!--   添加-->
+    <insert id="addDeviceInfo" parameterType="DeviceInfo">
+        insert into device_info values (#{id},#{gid},#{name},#{type},#{status})
+    </insert>
+    <!--    删除-->
+    <delete id="deleteDeviceInfo">
+        delete from device_info where id = #{id}
+    </delete>
+    <!--    修改-->
+    <update id="updateDeviceInfo" parameterType="DeviceInfo">
+        update device_info set name = #{name},type = #{type},status = #{status} where id = #{id}
+    </update>
+<!--    根据id查询-->
+    <select id="getDeviceInfo" resultType="DeviceInfo">
+        select * from device_info where id = #{id}
+    </select>
+</mapper>

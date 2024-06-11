@@ -46,4 +46,9 @@ public class GreenHouseController {
         data.put("totalPages",totalPages);
         return new ResponseResult(200,"分页查询成功",data);
     }
+    @GetMapping("/getDetails")
+    public ResponseResult getDetails(@RequestParam Integer id){
+        GreenHouse data = greenHouseService.getDetails(id);
+        return new ResponseResult(200,"查询成功",data);
+    }
 }
