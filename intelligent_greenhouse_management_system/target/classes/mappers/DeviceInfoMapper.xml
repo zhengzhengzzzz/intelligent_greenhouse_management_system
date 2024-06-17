@@ -19,4 +19,12 @@
     <select id="getDeviceInfo" resultType="DeviceInfo">
         select * from device_info where id = #{id}
     </select>
+    <!--    分页查询-->
+    <select id="getPages" parameterType="Integer" resultType="DeviceInfo">
+        select * from device_info where gid = #{gid} limit #{offset},#{pageSize}
+    </select>
+    <!--    查询总数-->
+    <select id="getCount" parameterType="Integer" resultType="Integer">
+        select count(*) from device_info where gid = #{gid}
+    </select>
 </mapper>

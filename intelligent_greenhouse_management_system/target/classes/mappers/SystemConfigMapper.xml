@@ -20,4 +20,12 @@
     <select id="getSystemConfig" resultType="SystemConfig">
         select * from system_config where id = #{id}
     </select>
+    <!--    分页查询-->
+    <select id="getPages" parameterType="Integer" resultType="SystemConfig">
+        select * from system_config where uid = #{uid} limit #{offset},#{pageSize}
+    </select>
+    <!--    查询总数-->
+    <select id="getCount" parameterType="Integer" resultType="Integer">
+        select count(*) from system_config where uid = #{uid}
+    </select>
 </mapper>

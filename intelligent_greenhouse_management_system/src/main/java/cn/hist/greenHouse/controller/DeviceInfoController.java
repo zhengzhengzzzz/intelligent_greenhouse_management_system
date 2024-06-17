@@ -6,6 +6,8 @@ import cn.hist.greenHouse.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/dev")
 public class DeviceInfoController {
@@ -30,5 +32,10 @@ public class DeviceInfoController {
     public ResponseResult getDev(@RequestParam Integer id){
         DeviceInfo data = deviceInfoService.getDeviceInfo(id);
         return new ResponseResult(200,"查询设备信息成功",data);
+    }
+    @GetMapping("/getPages")
+    public ResponseResult getPages(@RequestParam Integer gid,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+        Map<String,Object> data = deviceInfoService.getPages(gid,pageNum,pageSize);
+        return new ResponseResult(200,"查询成功",data);
     }
 }

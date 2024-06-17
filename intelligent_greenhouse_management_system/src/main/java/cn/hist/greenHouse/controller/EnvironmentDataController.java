@@ -34,13 +34,13 @@ public class EnvironmentDataController {
         return new ResponseResult(200,"删除环境参数成功");
     }
     @GetMapping("/getLatest")
-    public ResponseResult getLatest(){
-        EnvironmentData data = environmentDataService.getlatest();
+    public ResponseResult getLatest(@RequestParam Integer gid){
+        EnvironmentData data = environmentDataService.getlatest(gid);
         return new ResponseResult(200,"查询成功",data);
     }
     @GetMapping("/getEnvDatas")
-    public ResponseResult getEnvDatas(){
-        List<Map<String,Object>> data = environmentDataService.getEnvData();
+    public ResponseResult getEnvDatas(Integer gid){
+        List<Map<String,Object>> data = environmentDataService.getEnvData(gid);
 
 // 创建温度、湿度、CO2 和其他字段的 Map
         ArrayList temperaturelist = new ArrayList();
@@ -72,5 +72,10 @@ public class EnvironmentDataController {
         res.put("other",otherlist);
         res.put("time",timelist);
         return new ResponseResult(200,"查询成功",res);
+    }
+    @GetMapping("/getPages")
+    public ResponseResult getPages(@RequestParam Integer gid,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+        Map<String, Object> data = environmentDataService.getPages(gid,pageNum,pageSize);
+        return new ResponseResult(200,"查询成功",data);
     }
 }

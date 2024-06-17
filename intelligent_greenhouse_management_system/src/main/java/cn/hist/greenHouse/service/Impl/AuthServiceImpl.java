@@ -36,21 +36,21 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserService userService;
     @Override
-//    @Transactional
     public ResponseResult login(User user){
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-        System.out.println("authenticationToken："+authenticationToken);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
-        System.out.println("authentication："+authentication);
         if(Objects.isNull(authentication)){
             throw new RuntimeException("登录失败");
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
-        HashMap<String,String> authToken = new HashMap<>();
+        HashMap<String,Object> authToken = new HashMap<>();
+//        前端要求必须返回用户的信息
+        authToken.put("user",loginUser.getUser());
         authToken.put("token",jwt);
+        authToken.put("role",loginUser.getUser().getRole().toString());
         return new ResponseResult(200,"登录成功",authToken);
     }
     @Override

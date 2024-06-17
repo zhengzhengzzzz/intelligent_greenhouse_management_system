@@ -1,11 +1,16 @@
 package cn.hist.greenHouse.service.Impl;
 
+import cn.hist.greenHouse.entity.AlarmRecord;
 import cn.hist.greenHouse.entity.SystemConfig;
 import cn.hist.greenHouse.mapper.SystemConfigMapper;
 import cn.hist.greenHouse.service.SystemConfigService;
 import cn.hist.greenHouse.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class SystemConfigServiceImpl implements SystemConfigService {
@@ -57,4 +62,17 @@ public class SystemConfigServiceImpl implements SystemConfigService {
         return new ResponseResult(200,"查询成功",data);
     }
 
+    @Override
+    public Map<String,Object> getPages(Integer uid, Integer pageNum, Integer pageSize){
+        Integer offset = (pageNum - 1) * pageSize; //计算偏移量
+        List<SystemConfig> list = systemConfigMapper.getPages(uid, offset, pageSize);
+        Integer totalCount = systemConfigMapper.getCount(uid);
+        Integer totalPages = (totalCount + pageSize - 1) / pageSize;
+        Map<String,Object> data = new TreeMap<>();
+        data.put("list",list);
+        data.put("currentPage",pageNum);
+        data.put("totalCount",totalCount);
+        data.put("totalPages",totalPages);
+        return data;
+    }
 }

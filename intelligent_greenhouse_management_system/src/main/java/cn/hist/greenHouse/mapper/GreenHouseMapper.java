@@ -11,7 +11,7 @@ public interface GreenHouseMapper {
     void addGreenHouse(GreenHouse greenHouse);
     void deleteGreenHouse(Integer id);
     void updateGreenHouse(GreenHouse greenHouse);
-    List<GreenHouse> getGreenHouses(@Param("pageNum") Integer pageNum,@Param("pageSize") Integer pageSize);
-    Integer getGreenHouseCount();
-    GreenHouse getDetails(Integer id);
+    Integer getCount(Integer uid);
+    List<GreenHouse> getPages(@Param("uid") Integer uid,@Param("offset") Integer offset,@Param("pageSize") Integer pageSize);
+    GreenHouse getOne(Integer uid);
 }

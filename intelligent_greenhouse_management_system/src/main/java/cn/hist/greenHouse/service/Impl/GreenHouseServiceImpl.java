@@ -1,12 +1,16 @@
 package cn.hist.greenHouse.service.Impl;
 
+import cn.hist.greenHouse.entity.EnvironmentData;
 import cn.hist.greenHouse.entity.GreenHouse;
 import cn.hist.greenHouse.mapper.GreenHouseMapper;
 import cn.hist.greenHouse.service.GreenHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class GreenHouseServiceImpl implements GreenHouseService {
@@ -25,18 +29,36 @@ public class GreenHouseServiceImpl implements GreenHouseService {
         greenHouseMapper.updateGreenHouse(greenHouse);
     }
     @Override
-    public List<GreenHouse> getGreenHouses(Integer pageNum, Integer pageSize){
-        if(pageNum == 1){
-            pageNum = 0;
-        }
-        return greenHouseMapper.getGreenHouses(pageNum,pageSize);
+    public Map<String,Object> getPages(@RequestParam Integer uid,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+        //计算偏移量
+        Integer offset = (pageNum - 1) * pageSize;
+        List<GreenHouse> list = greenHouseMapper.getPages(uid, offset, pageSize);
+        Integer totalCount = greenHouseMapper.getCount(uid);
+        Integer totalPages = (totalCount + pageSize - 1) / pageSize;
+        Map<String,Object> data = new TreeMap<>();
+        data.put("list",list);
+        data.put("currentPage",pageNum);
+        data.put("totalCount",totalCount);
+        data.put("totalPages",totalPages);
+        return data;
     }
     @Override
-    public Integer getGreenHouseCount(){
-        return greenHouseMapper.getGreenHouseCount();
+    public GreenHouse getOne(Integer uid){
+        return greenHouseMapper.getOne(uid);
     }
-    @Override
-    public GreenHouse getDetails(Integer id){
-        return greenHouseMapper.getDetails(id);
-    }
+//    @Override
+//    public List<GreenHouse> getGreenHouses(Integer pageNum, Integer pageSize){
+//        if(pageNum == 1){
+//            pageNum = 0;
+//        }
+//        return greenHouseMapper.getGreenHouses(pageNum,pageSize);
+//    }
+//    @Override
+//    public Integer getGreenHouseCount(){
+//        return greenHouseMapper.getGreenHouseCount();
+//    }
+//    @Override
+//    public GreenHouse getDetails(Integer id){
+//        return greenHouseMapper.getDetails(id);
+//    }
 }

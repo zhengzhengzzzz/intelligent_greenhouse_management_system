@@ -9,6 +9,7 @@ public interface EnvironmentDataService {
     void addEnvironmentData(EnvironmentData environmentData);
     void deleteEnvironmentData(Integer id);
     void updateEnvironmentData(EnvironmentData environmentData);
-    EnvironmentData getlatest();
-    List<Map<String,Object>> getEnvData();
+    EnvironmentData getlatest(Integer gid);
+    List<Map<String,Object>> getEnvData(Integer gid);
+    Map<String, Object> getPages(Integer gid,Integer pageNum,Integer pageSize);
 }

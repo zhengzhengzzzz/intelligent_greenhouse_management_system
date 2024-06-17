@@ -15,62 +15,79 @@
     <update id="updateGreenHouse" parameterType="GreenHouse">
         update green_house set name = #{name},location = #{location},description = #{description} where id = #{id}
     </update>
-<!--    查询温室-->
-    <select id="getGreenHouses" parameterType="Integer" resultType="GreenHouse">
-        select * from green_house limit #{pageNum},#{pageSize}
+    <!--    查询总数-->
+    <select id="getCount" parameterType="Integer" resultType="Integer">
+        select count(*) from green_house where uid = #{uid}
     </select>
-<!--    查询温室总数-->
-    <select id="getGreenHouseCount" resultType="Integer">
-        select count(*) from green_house
-    </select>
-    <resultMap id="greenHouseMap" type="GreenHouse">
-        <id column="id" property="id"/>
-        <result property="name" column="name"/>
-        <result property="location" column="location"/>
-        <result property="description" column="description"/>
-        <collection property="con" ofType="ControlStrategy">
-            <id column="cid" property="id"/>
-            <result property="gid" column="gid"/>
-            <result property="parameter" column="parameter"/>
-            <result property="min" column="min"/>
-            <result property="max" column="max"/>
-            <result property="action" column="action"/>
-        </collection>
-        <collection property="al" ofType="AlarmRecord">
-            <id column="aid" property="id"/>
-            <result property="time" column="time"/>
-            <result property="gid" column="gid"/>
-            <result property="parameter" column="parameter"/>
-            <result property="value" column="value"/>
-            <result property="actionTaken" column="actionTaken"/>
-        </collection>
-        <collection property="env" ofType="EnvironmentData">
-            <id column="eid" property="id"/>
-            <result property="time" column="time"/>
-            <result property="gid" column="gid"/>
-            <result property="temperature" column="temperature"/>
-            <result property="humidity" column="humidity"/>
-            <result property="co2" column="co2"/>
-            <result property="other" column="other"/>
-        </collection>
-        <collection property="dev" ofType="DeviceInfo">
-            <id column="did" property="id"/>
-            <result property="gid" column="gid"/>
-            <result property="name" column="name"/>
-            <result property="type" column="type"/>
-            <result property="status" column="status"/>
-        </collection>
+<!--    查询默认温室-->
+    <!-- 随机查询一条记录 -->
+<!--    <select id="getOne" resultType="GreenHouse">-->
+<!--        SELECT * FROM green_house where uid = #{uid} LIMIT 1;-->
+<!--    </select>-->
+
+    <!-- ResultMap for GreenHouse -->
+    <resultMap id="greenHouseMap" type="cn.hist.greenHouse.entity.GreenHouse">
+        <id column="gid" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="name" property="name"/>
+        <result column="location" property="location"/>
+        <result column="description" property="description"/>
+
+        <!-- Collection of DeviceInfos -->
+        <collection property="dev" ofType="cn.hist.greenHouse.entity.DeviceInfo" column="gid" select="selectDeviceInfosByGid"/>
+        <!-- Collection of AlarmRecords -->
+        <collection property="al" ofType="cn.hist.greenHouse.entity.AlarmRecord" column="gid" select="selectAlarmRecordsByGid"/>
+        <!-- Collection of EnvironmentData -->
+        <collection property="env" ofType="cn.hist.greenHouse.entity.EnvironmentData" column="gid" select="selectEnvironmentDataByGid"/>
+        <!-- Collection of ControlStrategies -->
+        <collection property="con" ofType="cn.hist.greenHouse.entity.ControlStrategy" column="gid" select="selectControlStrategiesByGid"/>
     </resultMap>
 
-
-    <!--查询温室详情参数-->
-    <select id="getDetails" resultMap="greenHouseMap">
-        SELECT a.*, a.id AS aid, c.*, c.id AS cid, d.*, d.id AS did, e.*, e.id AS eid, g.*
-        FROM alarm_record a
-                 JOIN green_house g ON a.gid = g.id
-                 JOIN control_strategy c ON c.gid = g.id
-                 JOIN device_info d ON d.gid = g.id
-                 JOIN environment_data e ON e.gid = g.id
+    <!-- Query to fetch GreenHouse entities with related data -->
+    <select id="getPages" parameterType="map" resultMap="greenHouseMap">
+        SELECT
+            g.id AS gid, g.uid, g.name, g.location, g.description
+        FROM green_house g
+        WHERE g.uid = #{uid}
+            LIMIT #{offset}, #{pageSize}
     </select>
 
+    <!-- Select related DeviceInfos -->
+    <select id="selectDeviceInfosByGid" parameterType="Integer" resultType="cn.hist.greenHouse.entity.DeviceInfo">
+        SELECT
+            d.id AS id, d.gid AS gid, d.name AS name, d.type AS type, d.status AS status
+        FROM device_info d
+        WHERE d.gid = #{gid}
+    </select>
+
+    <!-- Select related AlarmRecords -->
+    <select id="selectAlarmRecordsByGid" parameterType="Integer" resultType="cn.hist.greenHouse.entity.AlarmRecord">
+        SELECT
+            a.id AS id, a.gid AS gid, a.time AS time, a.parameter AS parameter, a.value AS value, a.actionTaken AS actionTaken
+        FROM alarm_record a
+        WHERE a.gid = #{gid}
+    </select>
+
+    <!-- Select related EnvironmentData -->
+    <select id="selectEnvironmentDataByGid" parameterType="Integer" resultType="cn.hist.greenHouse.entity.EnvironmentData">
+        SELECT
+            e.id AS id, e.gid AS gid, e.time AS time, e.temperature AS temperature, e.humidity AS humidity, e.co2 AS co2, e.other AS other
+        FROM environment_data e
+        WHERE e.gid = #{gid}
+    </select>
+
+    <!-- Select related ControlStrategies -->
+    <select id="selectControlStrategiesByGid" parameterType="Integer" resultType="cn.hist.greenHouse.entity.ControlStrategy">
+        SELECT
+            c.id AS id, c.gid AS gid, c.parameter AS parameter, c.min AS min, c.max AS max, c.action AS action
+        FROM control_strategy c
+        WHERE c.gid = #{gid}
+    </select>
+
+    <select id="getOne" parameterType="Integer" resultMap="greenHouseMap">
+        SELECT
+            g.id AS gid, g.uid, g.name, g.location, g.description
+        FROM green_house g
+        where uid = #{uid} LIMIT 1
+    </select>
 </mapper>

@@ -7,6 +7,10 @@ import cn.hist.greenHouse.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 @Service
 public class AlarmRecordServiceImpl implements AlarmRecordService {
     @Autowired
@@ -52,5 +56,19 @@ public class AlarmRecordServiceImpl implements AlarmRecordService {
             return new ResponseResult(404,"未找到");
         }
         return new ResponseResult(200,"查询警报记录成功",data);
+    }
+    @Override
+    public Map<String,Object> getPages(Integer gid,Integer pageNum,Integer pageSize){
+        Integer offset = (pageNum - 1) * pageSize; //计算偏移量
+        List<AlarmRecord> list = alarmRecordMapper.getPages(gid, offset, pageSize);
+        Integer totalCount = alarmRecordMapper.getCount(gid);
+        Integer totalPages = (totalCount + pageSize - 1) / pageSize;
+
+        Map<String,Object> data = new TreeMap<>();
+        data.put("list",list);
+        data.put("currentPage",pageNum);
+        data.put("totalCount",totalCount);
+        data.put("totalPages",totalPages);
+        return data;
     }
 }

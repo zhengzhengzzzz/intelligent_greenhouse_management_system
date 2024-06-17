@@ -6,6 +6,8 @@ import cn.hist.greenHouse.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/sys")
 public class SystemConfigController {
@@ -26,5 +28,10 @@ public class SystemConfigController {
    @GetMapping("/get")
     public ResponseResult get(@RequestParam Integer id){
        return systemConfigService.getSystemConfig(id);
+   }
+   @GetMapping("/getPages")
+    public ResponseResult getPages(@RequestParam Integer uid,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+       Map<String,Object> data = systemConfigService.getPages(uid, pageNum, pageSize);
+       return new ResponseResult(200,"查询成功",data);
    }
 }
